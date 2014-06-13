@@ -478,6 +478,10 @@ static void cpufreq_interactive_timer(unsigned long data)
 				max_load >= up_threshold_any_cpu_load)
 				new_freq = sync_freq;
 		}
+
+		if (new_freq > hispeed_freq &&
+				pcpu->target_freq < hispeed_freq)
+			new_freq = hispeed_freq;
 	}
 
 	if (pcpu->target_freq >= hispeed_freq &&
