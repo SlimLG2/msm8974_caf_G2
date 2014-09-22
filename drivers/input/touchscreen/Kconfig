@@ -1121,4 +1121,11 @@ source "drivers/input/touchscreen/g2/Kconfig"
 
 endif
 
+config TOUCHBOOST_CONTROL
+	bool "Touch boost control"
+	depends on INPUT_TOUCHSCREEN
+	help
+	  Boeffla Kernels functionality to control input boost as touch boost
+	  in the Boeffla Config app
+
 endif
