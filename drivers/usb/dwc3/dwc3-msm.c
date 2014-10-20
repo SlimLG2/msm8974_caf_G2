@@ -2178,7 +2178,7 @@ static void dwc3_chg_detect_work(struct work_struct *w)
 		return;
 	}
 
-	queue_delayed_work(system_nrt_wq, &mdwc->chg_work, delay);
+	schedule_delayed_work(&mdwc->chg_work, delay);
 }
 
 static void dwc3_start_chg_det(struct dwc3_charger *charger, bool start)
@@ -2202,7 +2202,7 @@ static void dwc3_start_chg_det(struct dwc3_charger *charger, bool start)
 
 	mdwc->chg_state = USB_CHG_STATE_UNDEFINED;
 	charger->chg_type = DWC3_INVALID_CHARGER;
-	queue_delayed_work(system_nrt_wq, &mdwc->chg_work, 0);
+	schedule_delayed_work(&mdwc->chg_work, 0);
 }
 
 static int dwc3_msm_suspend(struct dwc3_msm *mdwc)
@@ -3733,6 +3733,8 @@ static int __devinit dwc3_msm_probe(struct platform_device *pdev)
 	/* usb_psy required only for vbus_notifications or charging support */
 	if (mdwc->ext_xceiv.otg_capability ||
 			!mdwc->charger.charging_disabled) {
+		mdwc->current_max = DWC3_IDEV_CHG_MIN * 1000;
+		mdwc->charger.max_power = -EINVAL;
 		mdwc->usb_psy.name = "usb";
 #ifdef CONFIG_LGE_PM
 		/* B2-BSP-USB@lge.com
@@ -3949,7 +3951,7 @@ static int dwc3_msm_pm_suspend(struct device *dev)
 
 	dev_dbg(dev, "dwc3-msm PM suspend\n");
 
-	flush_delayed_work_sync(&mdwc->resume_work);
+	flush_delayed_work(&mdwc->resume_work);
 	if (!atomic_read(&mdwc->in_lpm)) {
 		dev_err(mdwc->dev, "Abort PM suspend!! (USB is outside LPM)\n");
 		return -EBUSY;
