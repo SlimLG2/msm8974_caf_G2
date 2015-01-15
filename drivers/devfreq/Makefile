@@ -7,7 +7,9 @@ obj-$(CONFIG_DEVFREQ_GOV_MSM_ADRENO_TZ)	+= governor_msm_adreno_tz.o
 obj-$(CONFIG_ADRENO_IDLER)		+= adreno_idler.o
 obj-$(CONFIG_DEVFREQ_GOV_MSM_CPUFREQ)	+= governor_msm_cpufreq.o
 obj-$(CONFIG_DEVFREQ_GOV_MSM_CPUBW_HWMON)	+= governor_cpubw_hwmon.o
-
+obj-$(CONFIG_DEVFREQ_GOV_CONSERVATIVE)	+= governor_conservative.o
+obj-$(CONFIG_SIMPLE_GPU_ALGORITHM)	+= simple_gpu_algorithm.o
+>>>>>>> 01d8ea7... msm: simple gpu Algorithm: Initial coding for devfreq based Adreno Drivers
 
 # DEVFREQ Drivers
 obj-$(CONFIG_LGE_DEVFREQ_DFPS)  += g3_display.o
