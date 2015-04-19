@@ -626,6 +626,10 @@ CONFIG_MSM_UARTDM_Core_v14=y
 CONFIG_MSM_BOOT_STATS=y
 # CONFIG_MSM_XPU_ERR_FATAL is not set
 # CONFIG_MSM_CPR_REGULATOR is not set
+<<<<<<< HEAD:arch/arm/configs/cyanogenmod_d802_defconfig
+=======
+CONFIG_FORCE_FAST_CHARGE=y
+>>>>>>> 80088af... Merge My Force Fast Charge code from my KK Kernel Version 2.6 for LP.:arch/arm/configs/d802_defconfig
 CONFIG_KRAIT_REGULATOR=y
 
 #
