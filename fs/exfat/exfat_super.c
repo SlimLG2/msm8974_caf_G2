@@ -415,13 +415,13 @@ static int exfat_cmp(const struct dentry *parent, const struct inode *pinode,
 }
 
 static const struct dentry_operations exfat_ci_dentry_ops = {
-	.d_revalidate   = exfat_revalidate_ci,
+	.d_revalidate   = *exfat_revalidate_ci,
 	.d_hash         = exfat_d_hashi,
 	.d_compare      = exfat_cmpi,
 };
 
 static const struct dentry_operations exfat_dentry_ops = {
-	.d_revalidate   = exfat_revalidate,
+	.d_revalidate   = *exfat_revalidate,
 	.d_hash         = exfat_d_hash,
 	.d_compare      = exfat_cmp,
 };
