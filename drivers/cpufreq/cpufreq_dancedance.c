@@ -95,6 +95,7 @@ static struct dbs_tuners {
     unsigned int ignore_nice;
     unsigned int sampling_down_factor;
     unsigned int powersave_bias;
+    unsigned int io_is_busy;
     unsigned int target_residency;
     unsigned int allowed_misses;
 	unsigned int freq_step;
