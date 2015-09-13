@@ -157,6 +157,42 @@ static DEFINE_PER_CPU(struct cpu_load_data, cpuload);
 
 static bool io_is_busy;
 
+static inline cputime64_t get_cpu_idle_time_jiffy(unsigned int cpu,
+						  cputime64_t *wall)
+{
+	u64 idle_time;
+	u64 cur_wall_time;
+	u64 busy_time;
+
+	cur_wall_time = jiffies64_to_cputime64(get_jiffies_64());
+
+	busy_time  = kcpustat_cpu(cpu).cpustat[CPUTIME_USER];
+	busy_time += kcpustat_cpu(cpu).cpustat[CPUTIME_SYSTEM];
+	busy_time += kcpustat_cpu(cpu).cpustat[CPUTIME_IRQ];
+	busy_time += kcpustat_cpu(cpu).cpustat[CPUTIME_SOFTIRQ];
+	busy_time += kcpustat_cpu(cpu).cpustat[CPUTIME_STEAL];
+	busy_time += kcpustat_cpu(cpu).cpustat[CPUTIME_NICE];
+
+	idle_time = cur_wall_time - busy_time;
+	if (wall)
+		*wall = jiffies_to_usecs(cur_wall_time);
+
+	return jiffies_to_usecs(idle_time);
+}
+
+static inline cputime64_t get_cpu_idle_time(unsigned int cpu,
+					    cputime64_t *wall, int io_busy)
+{
+	u64 idle_time = get_cpu_idle_time_us(cpu, io_busy ? wall : NULL);
+
+	if (idle_time == -1ULL)
+		idle_time = get_cpu_idle_time_jiffy(cpu, wall);
+	else if (!io_busy)
+		idle_time += get_cpu_iowait_time_us(cpu, wall);
+
+	return idle_time;
+}
+
 static int update_average_load(unsigned int cpu)
 {
 	int ret;
@@ -279,7 +315,7 @@ static void apply_down_lock(unsigned int cpu)
 	struct down_lock *dl = &per_cpu(lock_info, cpu);
 
 	dl->locked = 1;
-	mod_delayed_work_on(0, hotplug_wq, &dl->lock_rem,
+	queue_delayed_work_on(0, hotplug_wq, &dl->lock_rem,
 			      msecs_to_jiffies(hotplug.down_lock_dur));
 }
 
@@ -433,7 +469,7 @@ static void reschedule_hotplug_work(void)
 	unsigned int delay;
 
 	delay = load_to_update_rate(stats.cur_avg_load);
-	mod_delayed_work_on(0, hotplug_wq, &hotplug_work,
+	queue_delayed_work_on(0, hotplug_wq, &hotplug_work,
 			      msecs_to_jiffies(delay));
 	if (debug == 4)
 		pr_info("%s: reschedule_hotplug delay %u\n",
@@ -580,7 +616,7 @@ static void __msm_hotplug_suspend(void)
 		return;
 
 	INIT_DELAYED_WORK(&hotplug.suspend_work, msm_hotplug_suspend);
-	mod_delayed_work_on(0, susp_wq, &hotplug.suspend_work,
+	queue_delayed_work_on(0, susp_wq, &hotplug.suspend_work,
 			msecs_to_jiffies(hotplug.suspend_defer_time * 1000));
 }
 
@@ -817,7 +853,7 @@ static int __ref msm_hotplug_start(void)
 		apply_down_lock(cpu);
 	}
 
-	mod_delayed_work_on(0, hotplug_wq, &hotplug_work,
+	queue_delayed_work_on(0, hotplug_wq, &hotplug_work,
 							START_DELAY);
 
 	return ret;
