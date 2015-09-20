@@ -25,6 +25,7 @@
 
 #ifdef CONFIG_STATE_NOTIFIER
 #include <linux/state_notifier.h>
+bool scr_suspended;
 #endif
 
 #include "mdss.h"

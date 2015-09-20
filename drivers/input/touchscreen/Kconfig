@@ -1132,5 +1132,4 @@ config TOUCHBOOST_CONTROL
 	help
 	  Boeffla Kernels functionality to control input boost as touch boost
 	  in the Boeffla Config app
-
 endif
