@@ -434,3 +434,5 @@ obj-$(CONFIG_MSM_HOTPLUG) += msm_hotplug.o
 
 obj-$(CONFIG_ALUCARD_HOTPLUG) += alucard_hotplug.o
 obj-$(CONFIG_ZEN_DECISION) += msm_zen_decision.o
+
+obj-$(CONFIG_MSM_CPUFREQ_LIMITER) += cpufreq_limit.o

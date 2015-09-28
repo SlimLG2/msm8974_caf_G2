@@ -3127,3 +3127,13 @@ config ALUCARD_HOTPLUG
 	default y
 	help
 	  Generic Alucard-hotplug cpu hotplug driver for ARM SOCs
+
+config MSM_CPUFREQ_LIMITER
+	tristate "MSM CPU frequency limiter"
+	default y
+	help
+	  This driver limits MSM CPU frequency through sysfs file system.
+	  To compile this driver as a module, choose M here: the
+	  module will be called cpufreq_stats.
+	 
+	  If in doubt, say Y.
