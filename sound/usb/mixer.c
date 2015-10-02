@@ -1491,11 +1491,7 @@ static int mixer_ctl_procunit_get(struct snd_kcontrol *kcontrol, struct snd_ctl_
 static int mixer_ctl_procunit_put(struct snd_kcontrol *kcontrol, struct snd_ctl_elem_value *ucontrol)
 {
 	struct usb_mixer_elem_info *cval = kcontrol->private_data;
-<<<<<<< HEAD
-	int val, oval = 0, err;
-=======
 	int val = 0, oval = 0, err = 0;
->>>>>>> 5c50c78... Fixes to kernel code inits after checking build with -O3
 
 	err = get_cur_ctl_value(cval, cval->control << 8, &oval);
 	if (err < 0) {
@@ -1758,11 +1754,7 @@ static int mixer_ctl_selector_info(struct snd_kcontrol *kcontrol, struct snd_ctl
 static int mixer_ctl_selector_get(struct snd_kcontrol *kcontrol, struct snd_ctl_elem_value *ucontrol)
 {
 	struct usb_mixer_elem_info *cval = kcontrol->private_data;
-<<<<<<< HEAD
-	int val = 0, err;
-=======
 	int val = 0, err = 0;
->>>>>>> 5c50c78... Fixes to kernel code inits after checking build with -O3
 
 	err = get_cur_ctl_value(cval, cval->control << 8, &val);
 	if (err < 0) {
@@ -1781,11 +1773,7 @@ static int mixer_ctl_selector_get(struct snd_kcontrol *kcontrol, struct snd_ctl_
 static int mixer_ctl_selector_put(struct snd_kcontrol *kcontrol, struct snd_ctl_elem_value *ucontrol)
 {
 	struct usb_mixer_elem_info *cval = kcontrol->private_data;
-<<<<<<< HEAD
-	int val, oval = 0, err;
-=======
 	int val = 0, oval = 0, err = 0;
->>>>>>> 5c50c78... Fixes to kernel code inits after checking build with -O3
 
 	err = get_cur_ctl_value(cval, cval->control << 8, &oval);
 	if (err < 0) {
